@@ -32,7 +32,7 @@ class Api::TodosController < ApplicationController
     Todo.find(params[:id]).destroy
     render json: { message: 'Todo was deleted'}
   end
-  
+
   private
     def todo_params
       params.require(:todo).permit(:title, :complete)
