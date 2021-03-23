@@ -1,32 +1,39 @@
 import { Component } from 'react';
-
 class TodoForm extends Component {
   state = { title: "", complete: false }
-
-  //store the user input into state
+  componentDidMount() {
+    if (this.props.id) {
+      const { id, title, complete } = this.props 
+      this.setState({ id, title, complete})
+    }
+  }
+  // store the user input into state
   handleChange = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
   }
-
   handleSubmit = (e) => {
     e.preventDefault()
-    //adding the todo the user made from state to the add function
-    this.props.addTodo(this.state)
-    //clear out the form
+    if (this.props.id) {
+      const { updateTodo, id, toggleForm } = this.props 
+      updateTodo(id, this.state)
+      toggleForm()
+    } else {
+      // adding the todo the user made from state to the add function
+      this.props.addTodo(this.state)
+    }
+    // clear out the form
     this.setState({ title: "", complete: false })
   }
-
   render() {
     const { title } = this.state
     return(
       <form onSubmit={this.handleSubmit}>
-        <input
+        <input 
           type="text"
           name="title"
-          value={title}
-          onChange={this.handleChange}
-          //input attributes below are not required
+          value={title} 
+          onChange={this.handleChange} 
           required
           placeholder="Title"
         />
@@ -35,5 +42,4 @@ class TodoForm extends Component {
     )
   }
 }
-
 export default TodoForm;
